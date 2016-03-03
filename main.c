@@ -1,3 +1,5 @@
+// ******************************************************************************************* //
+//
 // File:         lab2p1.c
 // Date:         2-29-2016
 // Authors:      Brad Nees 
@@ -22,14 +24,15 @@
 
 typedef enum stateTypeEnum{
     
-    DeBounce, Wait, SearchKeypad, WriteLCD
+    DeBounce, DeBounceRelease, Wait, Wait2, SearchKeypad, WriteLCD
     
 }stateType;
 
 volatile stateType state = Wait;
 volatile char keyPressed = '\0';
-volatile int row = 0;
+volatile int row = 1;
 volatile int position = 0; 
+volatile int counter = 1;
 
 
 int main(void)
@@ -42,65 +45,103 @@ int main(void)
    
    
    initLCD();
-    
    //TRISCbits.TRISC4 = 0;
     while(1)
     {
-       // LATCbits.LATC4 = ~LATCbits.LATC4;
-        //delayUs(1);
-        //testLCD();
+       
         
         switch(state){
             
             case Wait: 
+             //   while(1)
+              //  testLCD();
                 
-               IEC1bits.CNBIE = ON; //enable interupt 
+          //     IEC1bits.CNBIE = ON; //enable interrupt
+                
 //                moveCursorLCD(1,1);
 //                printCharLCD('d');
-               
-                 moveCursorLCD(1,1); //first line 
-                printStringLCD("Hi Luke");  
+              
+                //moveCursorLCD(1,1); //first line 
+                //printStringLCD("Wait State");  
                 //scanKeypad();
-                 moveCursorLCD(1,2);
-                printCharLCD(scanKeypad());
+                // moveCursorLCD(1,2);
+                // printStringLCD("Wait2 State");
+                //printCharLCD(scanKeypad());
                 //IFS1bits.CNBIF = 1;
+                break;
+                
+            case Wait2:
+                //IEC1bits.CNBIE = ON;
+//               if((PORTBbits.RB10 == 1) && (PORTBbits.RB12 == 1) && (PORTBbits.RB14 == 1)){// button released
+//      
+//                    //delayUs(500);
+//                    state = DeBounceRelease;
+//                    IEC1bits.CNBIE = ON;
+//                }
+                if((PORTBbits.RB10 == 1) && (PORTBbits.RB12 == 1) && (PORTBbits.RB14 == 1) ) {
+         state = DeBounceRelease;
+    
+                //moveCursorLCD(1,2); //first line 
+                //printStringLCD("WAIT 2");
+    }
+                
+                else state = Wait2;
                 break;
                 
             case DeBounce: 
                  
-                 
+                //moveCursorLCD(1,1); //first line 
+                //printStringLCD("DeBounce State");
                 
-                delayUs(5000);
+                delayUs(50);
                 state = SearchKeypad;
                 
                 break;
                 
+            case DeBounceRelease: 
+                 
+                //moveCursorLCD(1,1); //first line 
+                //printStringLCD("DeBounce State");
+                
+                delayUs(50);
+                state = WriteLCD;
+                //IEC1bits.CNBIE = ON;
+                break;
+                
+                
+                
+                
             case SearchKeypad: 
                 
-                IEC1bits.CNBIE = OFF;// turn off ISR 
-                keyPressed = scanKeypad();
+                //moveCursorLCD(1,1); //first line 
+                //printStringLCD("Search Keypad");
+                //delayUs(5000);
                 
-                state = WriteLCD; 
+              //  IEC1bits.CNBIE = OFF;// turn off ISR 
+                keyPressed = scanKeypad();
+                //
+               state = Wait2; 
                 break;
                 
             case WriteLCD: 
-                
-                for(row = 1; row < 3 ; row++){
-                    
-                    for(position = 1; position < 9; position++){
-                       
-                        //moveCursorLCD(1,1); //first position, first line
-                        
-                        moveCursorLCD(position,row); //first position, first line
-                        printCharLCD(keyPressed);
-                        
-                        //printStringLCD(keyPressed);
-                        
-                        state = Wait; 
-               
-                    }
-                
+                //counter = counter + 1;
+                if (counter == 9){
+////                    if (row == 1)
+//                        row = 2;
+//                    else if (row == 2)
+//                        row = 1;
+//                    moveCursorLCD(1,row);
+                    counter = 1;
                 }
+                moveCursorLCD(counter,1);
+                printCharLCD(keyPressed);
+                //IEC1bits.CNBIE = ON;
+                 //keyPressed = '\0';
+                counter = counter + 1;
+                                           
+                        state = Wait; 
+                
+               //IEC1bits.CNBIE = ON;
                 break;
             
             
@@ -126,26 +167,22 @@ void __ISR(_CHANGE_NOTICE_VECTOR, IPL7SRS) _CNInterrupt(void){
     IFS1bits.CNBIF = 0;
     
     PORTB;
+                                          
+   
     
-    
-    
-//    TRISBbits.TRISB10 = INPUT;
-//    TRISBbits.TRISB12 = INPUT;
- //  TRISBbits.TRISB14 = INPUT;
-    
-    moveCursorLCD(1,1); //first line 
-                printStringLCD("DeBounce");
-                        
-    state = DeBounce;
-    
-    if((PORTBbits.RB10 == 0) || (PORTBbits.RB12 == 0) || (PORTBbits.RB14 == 0)){// button pressed
+    //if((PORTBbits.RB10 == 0) || (PORTBbits.RB12 == 0) || (PORTBbits.RB14 == 0)){// button pressed
       
-        moveCursorLCD(1,1); //first line 
-                printStringLCD("DeBounce");
-        
-    }
+       //moveCursorLCD(1,2); //first line 
+             //  printStringLCD("ISR Works");
+     state = DeBounce;
+    //}
     
-    
+//    if((state == Wait2) && ((PORTBbits.RB10 == 1) && (PORTBbits.RB12 == 1) && (PORTBbits.RB14 == 1)) ) {
+//         state = DeBounceRelease;
+//    
+//                //moveCursorLCD(1,2); //first line 
+//                //printStringLCD("WAIT 2");
+//    }
 }
 
 

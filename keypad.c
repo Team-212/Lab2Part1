@@ -8,13 +8,13 @@
 #define OFF 0
 
 
-#define a1 PORTBbits.RB12 //j10 pin 49
-#define a2 PORTEbits.RE0  //j10 pin 12
-#define a3 PORTBbits.RB10 //j10 pin 47
-#define a4 PORTDbits.RD11 //j10 pin 15
-#define a5 PORTBbits.RB14 //j10 pin 59
-#define a6 PORTDbits.RD5  //j10 pin 13
-#define a7 PORTGbits.RG0  //j11 pin 6
+#define a1 PORTBbits.RB12 //j10 pin 49 1
+#define a2 PORTEbits.RE0  //j10 pin 12 2
+#define a3 PORTBbits.RB10 //j10 pin 47 3 
+#define a4 PORTEbits.RE4 //j10 pin 8 4
+#define a5 PORTBbits.RB14 //j10 pin 59 5
+#define a6 PORTEbits.RE2  //j10 pin 10 6
+#define a7 PORTEbits.RE6  //j10 pin 6  7
 
 
 
@@ -38,14 +38,19 @@ void initKeypad(void){
     CNPUBbits.CNPUB14 = OFF;
     
     TRISEbits.TRISE0 = OUTPUT;  //sets rows 
-    TRISGbits.TRISG0 = OUTPUT;
-    TRISDbits.TRISD5 = OUTPUT;
-    TRISDbits.TRISD11 = OUTPUT;
+    TRISEbits.TRISE2 = OUTPUT;
+    TRISEbits.TRISE4 = OUTPUT;
+    TRISEbits.TRISE6 = OUTPUT;
     
-    ODCEbits.ODCE0 = OFF;// open drain collector for outputs
-    ODCGbits.ODCG0 = OFF;
-    ODCDbits.ODCD5 = OFF;
-    ODCDbits.ODCD11 = OFF;
+    LATEbits.LATE0 = OFF;// open drain collector for outputs
+    LATEbits.LATE2 = OFF;
+    LATEbits.LATE4 = OFF;
+    LATEbits.LATE6 = OFF;
+    
+    ODCEbits.ODCE0 = ONe;// open drain collector for outputs
+    ODCEbits.ODCE2 = ONe;
+    ODCEbits.ODCE4 = ONe;
+    ODCEbits.ODCE6 = ONe;
     
     CNCONBbits.ON = 1;
     CNENBbits.CNIEB10 = 1;
@@ -55,8 +60,8 @@ void initKeypad(void){
      IFS1bits.CNBIF = 0; // put down flag
     
     IPC8bits.CNIP = 7;                  // Configure interrupt priority
-    IPC8bits.CNIS = 3;                  // Configure the interrupt sub-priority
-    IEC1bits.CNBIE = 1;
+    //IPC8bits.CNIS = 3;                  // Configure the interrupt sub-priority
+    IEC1bits.CNBIE = 1;  //interrupt enable 
     
     
     
@@ -75,84 +80,109 @@ char scanKeypad(void){
     //int column = 0;
     
     
-    //IEC1bits.CNBIE = 0;
+    CNCONBbits.ON = 0;
     
-    ODCEbits.ODCE0 = ONe;// open drain collector for outputs
-    ODCGbits.ODCG0 = OFF;
-    ODCDbits.ODCD5 = OFF;
-    ODCDbits.ODCD11 = OFF;
+//    ODCEbits.ODCE0 = ONe;// open drain collector for outputs
+//    ODCGbits.ODCG0 = OFF;
+//    ODCDbits.ODCD5 = OFF;
+//    ODCDbits.ODCD11 = OFF;
     
-    delayUs(500);
+    LATEbits.LATE0 = OFF;// open drain collector for outputs
+    LATEbits.LATE2 = 1;
+    LATEbits.LATE4 = 1;
+    LATEbits.LATE6 = 1;
+    
+    delayUs(50);
     
     if(a3 == 0){
-        keyPressed = '1';
+        keyPressed = '1';CNCONBbits.ON = 1;
+        return keyPressed;
     }
     
     else if(a1 == 0)    {
-           keyPressed = '2'; 
+           keyPressed = '2'; CNCONBbits.ON = 1;
+           return keyPressed;
     }
     else if(a5 == 0) {    
-           keyPressed = '3'; 
+           keyPressed = '3'; CNCONBbits.ON = 1;
+           return keyPressed;
     
     }
-    ODCEbits.ODCE0 = OFF;// open drain collector for outputs
-    ODCGbits.ODCG0 = ONe;
-    ODCDbits.ODCD5 = OFF;
-    ODCDbits.ODCD11 = OFF;
     
-    delayUs(500);
+    LATEbits.LATE0 = 1;// open drain collector for outputs
+    LATEbits.LATE2 = 0;
+    LATEbits.LATE4 = 1;
+    LATEbits.LATE6 = 1;
+    
+    delayUs(50);
     
     if(a3 == 0){
-        keyPressed = '4';
+        keyPressed = '4';CNCONBbits.ON = 1;
+        return keyPressed;
     }
     else if(a1 == 0)   {  
            keyPressed = '5'; 
+          return keyPressed;
     }
     else if(a5 == 0)    { 
-           keyPressed = '6'; 
+           keyPressed = '6'; CNCONBbits.ON = 1;
+           return keyPressed;
     }
-    ODCEbits.ODCE0 = OFF;// open drain collector for outputs
-    ODCGbits.ODCG0 = OFF;
-    ODCDbits.ODCD5 = ONe;
-    ODCDbits.ODCD11 = OFF;
     
-    delayUs(500);
+    LATEbits.LATE0 = 1;// open drain collector for outputs
+    LATEbits.LATE2 = 1;
+    LATEbits.LATE4 = 0;
+    LATEbits.LATE6 = 1;
+    
+    delayUs(50);
     
     if(a3 == 0){
-        keyPressed = '7';
+        keyPressed = '7';CNCONBbits.ON = 1;
+       return keyPressed;
     }
             
     else if(a1 == 0)    { 
-           keyPressed = '8'; 
+           keyPressed = '8'; CNCONBbits.ON = 1;
+          return keyPressed;
     }
     else if(a5 == 0)     {
-           keyPressed = '9'; 
+           keyPressed = '9'; CNCONBbits.ON = 1;
+          return keyPressed;
     }
     
-    ODCEbits.ODCE0 = OFF;// open drain collector for outputs
-    ODCGbits.ODCG0 = OFF;
-    ODCDbits.ODCD5 = OFF;
-    ODCDbits.ODCD11 = ONe;
+    LATEbits.LATE0 = 1;// open drain collector for outputs
+    LATEbits.LATE2 = 1;
+    LATEbits.LATE4 = 1;
+    LATEbits.LATE6 = 0;
     
-    delayUs(500);
+    delayUs(50);
     
     if(a3 == 0){
         keyPressed = '*';
+        return keyPressed;CNCONBbits.ON = 1;
     }
             
     else if(a1 == 0)     {
-           keyPressed = '0'; 
+           keyPressed = '0';CNCONBbits.ON = 1; 
+          return keyPressed;
     }
     
     else if(a5 == 0)     {
-           keyPressed = '#'; 
+           keyPressed = '#';CNCONBbits.ON = 1; 
+           return keyPressed;
     }
            
+    
+    LATEbits.LATE0 = 0;// open drain collector for outputs
+    LATEbits.LATE2 = 0;
+    LATEbits.LATE4 = 0;
+    LATEbits.LATE6 = 0;
     
       
    // IEC1bits.CNBIE = 1;
     //IFS1bits.CNBIF = 0;
     
-    
+    CNCONBbits.ON = 1;
+     
     return keyPressed;
 }

@@ -54,7 +54,7 @@ void initTimer2(){
     
      
     TMR2 = 0;// clear TMR2
-    T2CONbits.TCKPS = 2; // Initialize pre-scalar to 1
+    T2CONbits.TCKPS = 1; // Initialize pre-scalar to 1
     T2CONbits.TCS = 0; // Use internal peripheral clock
     IPC1bits.T1IP = 7;
     IPC1bits.T1IS = 3;
