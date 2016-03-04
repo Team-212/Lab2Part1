@@ -28,7 +28,7 @@ void delayUs(unsigned int delay){
     
      
     TMR2 = 0; // clear TMR2
-    PR2 = delay*8;//(delay*975)-1; // PR2 so that delay equals 1us * delay
+    PR2 = delay*8;//(delay*975)-1; // PR2 so that delay equals 1us * delay //it was 8
     IFS0bits.T2IF = 0; // Lower interrupt flag
     T2CONbits.TON = 1; // Turns on timer
     while(IFS0bits.T2IF == 0); //Delays until TMR2 hits PR
@@ -69,8 +69,8 @@ void initTimer2(){
 void initTimer1(){
     
     TMR1 = 0;
-    T1CONbits.TCKPS = PRESCALAR_256; //set prescale
-    PR1 = 39; //Do calculatio // turn on timer // assuming 10MHz oscillator
+    T1CONbits.TCKPS = PRESCALAR_256; //set prescaler
+    PR1 = 39; //Do calculation // turn on timer // assuming 10MHz oscillator
     T1CONbits.ON = 1; 
     IEC0bits.T1IE = 1; // enables interrupt
     IPC1bits.T1IP = 7; // timer 1 priority

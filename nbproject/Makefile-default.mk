@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=interruptP1.c lcd.c ledsP1.c main.c switchP1.c timerP2.c keypad.c
+SOURCEFILES_QUOTED_IF_SPACED=interruptP1.c lcd.c ledsP1.c main.c switchP1.c timerP2.c keypad.c SPI_Configuration.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/interruptP1.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/ledsP1.o ${OBJECTDIR}/main.o ${OBJECTDIR}/switchP1.o ${OBJECTDIR}/timerP2.o ${OBJECTDIR}/keypad.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/interruptP1.o.d ${OBJECTDIR}/lcd.o.d ${OBJECTDIR}/ledsP1.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/switchP1.o.d ${OBJECTDIR}/timerP2.o.d ${OBJECTDIR}/keypad.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/interruptP1.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/ledsP1.o ${OBJECTDIR}/main.o ${OBJECTDIR}/switchP1.o ${OBJECTDIR}/timerP2.o ${OBJECTDIR}/keypad.o ${OBJECTDIR}/SPI_Configuration.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/interruptP1.o.d ${OBJECTDIR}/lcd.o.d ${OBJECTDIR}/ledsP1.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/switchP1.o.d ${OBJECTDIR}/timerP2.o.d ${OBJECTDIR}/keypad.o.d ${OBJECTDIR}/SPI_Configuration.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/interruptP1.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/ledsP1.o ${OBJECTDIR}/main.o ${OBJECTDIR}/switchP1.o ${OBJECTDIR}/timerP2.o ${OBJECTDIR}/keypad.o
+OBJECTFILES=${OBJECTDIR}/interruptP1.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/ledsP1.o ${OBJECTDIR}/main.o ${OBJECTDIR}/switchP1.o ${OBJECTDIR}/timerP2.o ${OBJECTDIR}/keypad.o ${OBJECTDIR}/SPI_Configuration.o
 
 # Source Files
-SOURCEFILES=interruptP1.c lcd.c ledsP1.c main.c switchP1.c timerP2.c keypad.c
+SOURCEFILES=interruptP1.c lcd.c ledsP1.c main.c switchP1.c timerP2.c keypad.c SPI_Configuration.c
 
 
 CFLAGS=
@@ -136,6 +136,12 @@ ${OBJECTDIR}/keypad.o: keypad.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/keypad.o 
 	@${FIXDEPS} "${OBJECTDIR}/keypad.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/keypad.o.d" -o ${OBJECTDIR}/keypad.o keypad.c   
 	
+${OBJECTDIR}/SPI_Configuration.o: SPI_Configuration.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/SPI_Configuration.o.d 
+	@${RM} ${OBJECTDIR}/SPI_Configuration.o 
+	@${FIXDEPS} "${OBJECTDIR}/SPI_Configuration.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/SPI_Configuration.o.d" -o ${OBJECTDIR}/SPI_Configuration.o SPI_Configuration.c   
+	
 else
 ${OBJECTDIR}/interruptP1.o: interruptP1.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
@@ -178,6 +184,12 @@ ${OBJECTDIR}/keypad.o: keypad.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/keypad.o.d 
 	@${RM} ${OBJECTDIR}/keypad.o 
 	@${FIXDEPS} "${OBJECTDIR}/keypad.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/keypad.o.d" -o ${OBJECTDIR}/keypad.o keypad.c   
+	
+${OBJECTDIR}/SPI_Configuration.o: SPI_Configuration.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/SPI_Configuration.o.d 
+	@${RM} ${OBJECTDIR}/SPI_Configuration.o 
+	@${FIXDEPS} "${OBJECTDIR}/SPI_Configuration.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/SPI_Configuration.o.d" -o ${OBJECTDIR}/SPI_Configuration.o SPI_Configuration.c   
 	
 endif
 

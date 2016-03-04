@@ -19,7 +19,7 @@
 
 // ******************************************************************************************* //
 
-#define ON 1
+//#define ON 1
 #define OFF 0
 
 typedef enum stateTypeEnum{
@@ -29,7 +29,7 @@ typedef enum stateTypeEnum{
 }stateType;
 
 volatile stateType state = Wait;
-volatile char keyPressed = '\0';
+volatile char keyPressed = 'f';
 volatile int row = 1;
 volatile int position = 0; 
 volatile int counter = 1;
@@ -41,32 +41,35 @@ int main(void)
     enableInterrupts();
    initTimer2();
    initKeypad();
-   
-   
-   
    initLCD();
+   
+   //TRISA.RA7
+   TRISAbits.TRISA7 = 0;
+   
    //TRISCbits.TRISC4 = 0;
     while(1)
     {
-       
+       LATAbits.LATA7 = 1;
         
         switch(state){
             
             case Wait: 
-             //   while(1)
-              //  testLCD();
-                
+               // while(1)
+              // testLCD();
+//                while(1){
+//                    
+//                    delayUs(50);
+//                            LATAbits.LATA7 = 1;
+//                     delayUs(50);
+//                            LATAbits.LATA7 = 0;
+//                    
+//                }
           //     IEC1bits.CNBIE = ON; //enable interrupt
                 
-//                moveCursorLCD(1,1);
-//                printCharLCD('d');
-              
-                //moveCursorLCD(1,1); //first line 
-                //printStringLCD("Wait State");  
-                //scanKeypad();
-                // moveCursorLCD(1,2);
-                // printStringLCD("Wait2 State");
-                //printCharLCD(scanKeypad());
+//                              
+               // moveCursorLCD(1,1); //first line 
+               // printStringLCD("Wait State");  
+                
                 //IFS1bits.CNBIF = 1;
                 break;
                 
@@ -78,11 +81,16 @@ int main(void)
 //                    state = DeBounceRelease;
 //                    IEC1bits.CNBIE = ON;
 //                }
+                
+               // moveCursorLCD(1,2); //first line 
+               // printStringLCD("WAIT 2");
+                
                 if((PORTBbits.RB10 == 1) && (PORTBbits.RB12 == 1) && (PORTBbits.RB14 == 1) ) {
-         state = DeBounceRelease;
+         
     
-                //moveCursorLCD(1,2); //first line 
-                //printStringLCD("WAIT 2");
+                
+                state = DeBounceRelease;
+                break;
     }
                 
                 else state = Wait2;
@@ -93,7 +101,7 @@ int main(void)
                 //moveCursorLCD(1,1); //first line 
                 //printStringLCD("DeBounce State");
                 
-                delayUs(50);
+                delayUs(500);
                 state = SearchKeypad;
                 
                 break;
@@ -103,7 +111,9 @@ int main(void)
                 //moveCursorLCD(1,1); //first line 
                 //printStringLCD("DeBounce State");
                 
-                delayUs(50);
+                delayUs(500);
+               // moveCursorLCD(1,2); //first line 
+               // printStringLCD("Button Released");
                 state = WriteLCD;
                 //IEC1bits.CNBIE = ON;
                 break;
@@ -118,22 +128,35 @@ int main(void)
                 //delayUs(5000);
                 
               //  IEC1bits.CNBIE = OFF;// turn off ISR 
+                
+                CNCONBbits.ON = 0; //turn change notifications off 
+                
+                LATEbits.LATE0 = 1;// open drain collector for outputs
+                LATEbits.LATE2 = 1;
+                LATEbits.LATE4 = 1;
+                LATEbits.LATE6 = 1;
+                
                 keyPressed = scanKeypad();
-                //
-               state = Wait2; 
+                
+                LATEbits.LATE0 = 0;// open drain collector for outputs
+                LATEbits.LATE2 = 0;
+                LATEbits.LATE4 = 0;
+                LATEbits.LATE6 = 0;
+                
+                CNCONBbits.ON = 1; // CN on 
+                
+               state = Wait2;
+               //state = WriteLCD;
                 break;
                 
             case WriteLCD: 
-                //counter = counter + 1;
+                
                 if (counter == 9){
-////                    if (row == 1)
-//                        row = 2;
-//                    else if (row == 2)
-//                        row = 1;
-//                    moveCursorLCD(1,row);
+                    row = ~row;
                     counter = 1;
                 }
-                moveCursorLCD(counter,1);
+                
+                moveCursorLCD(counter,row);
                 printCharLCD(keyPressed);
                 //IEC1bits.CNBIE = ON;
                  //keyPressed = '\0';
@@ -152,14 +175,7 @@ int main(void)
     return 0;
 }
 
-/*
 
-void __ISR(_TIMER_1_VECTOR, IPL7SRS) _T1Interrupt(void){
-    IFS0bits.T1IF = 0;
-    timerUp = 1;
-}
- * 
- */
 
 void __ISR(_CHANGE_NOTICE_VECTOR, IPL7SRS) _CNInterrupt(void){
     //TODO: Implement the interrupt to capture the press of the button
@@ -168,13 +184,13 @@ void __ISR(_CHANGE_NOTICE_VECTOR, IPL7SRS) _CNInterrupt(void){
     
     PORTB;
                                           
-   
+    state = DeBounce;
     
     //if((PORTBbits.RB10 == 0) || (PORTBbits.RB12 == 0) || (PORTBbits.RB14 == 0)){// button pressed
       
        //moveCursorLCD(1,2); //first line 
              //  printStringLCD("ISR Works");
-     state = DeBounce;
+    
     //}
     
 //    if((state == Wait2) && ((PORTBbits.RB10 == 1) && (PORTBbits.RB12 == 1) && (PORTBbits.RB14 == 1)) ) {

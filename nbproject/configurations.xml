@@ -26,6 +26,7 @@
       <itemPath>switchP1.c</itemPath>
       <itemPath>timerP2.c</itemPath>
       <itemPath>keypad.c</itemPath>
+      <itemPath>SPI_Configuration.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

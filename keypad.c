@@ -80,7 +80,7 @@ char scanKeypad(void){
     //int column = 0;
     
     
-    CNCONBbits.ON = 0;
+    //CNCONBbits.ON = 0;
     
 //    ODCEbits.ODCE0 = ONe;// open drain collector for outputs
 //    ODCGbits.ODCG0 = OFF;
@@ -92,19 +92,19 @@ char scanKeypad(void){
     LATEbits.LATE4 = 1;
     LATEbits.LATE6 = 1;
     
-    delayUs(50);
+    delayUs(500);
     
     if(a3 == 0){
-        keyPressed = '1';CNCONBbits.ON = 1;
+        keyPressed = '1';
         return keyPressed;
     }
     
     else if(a1 == 0)    {
-           keyPressed = '2'; CNCONBbits.ON = 1;
+           keyPressed = '2'; 
            return keyPressed;
     }
     else if(a5 == 0) {    
-           keyPressed = '3'; CNCONBbits.ON = 1;
+           keyPressed = '3'; 
            return keyPressed;
     
     }
@@ -114,10 +114,10 @@ char scanKeypad(void){
     LATEbits.LATE4 = 1;
     LATEbits.LATE6 = 1;
     
-    delayUs(50);
+    delayUs(500);
     
     if(a3 == 0){
-        keyPressed = '4';CNCONBbits.ON = 1;
+        keyPressed = '4';
         return keyPressed;
     }
     else if(a1 == 0)   {  
@@ -125,7 +125,7 @@ char scanKeypad(void){
           return keyPressed;
     }
     else if(a5 == 0)    { 
-           keyPressed = '6'; CNCONBbits.ON = 1;
+           keyPressed = '6'; 
            return keyPressed;
     }
     
@@ -134,19 +134,19 @@ char scanKeypad(void){
     LATEbits.LATE4 = 0;
     LATEbits.LATE6 = 1;
     
-    delayUs(50);
+    delayUs(500);
     
     if(a3 == 0){
-        keyPressed = '7';CNCONBbits.ON = 1;
+        keyPressed = '7';
        return keyPressed;
     }
             
     else if(a1 == 0)    { 
-           keyPressed = '8'; CNCONBbits.ON = 1;
+           keyPressed = '8'; 
           return keyPressed;
     }
     else if(a5 == 0)     {
-           keyPressed = '9'; CNCONBbits.ON = 1;
+           keyPressed = '9'; 
           return keyPressed;
     }
     
@@ -155,28 +155,28 @@ char scanKeypad(void){
     LATEbits.LATE4 = 1;
     LATEbits.LATE6 = 0;
     
-    delayUs(50);
+    delayUs(500);
     
     if(a3 == 0){
         keyPressed = '*';
-        return keyPressed;CNCONBbits.ON = 1;
+        return keyPressed;
     }
             
     else if(a1 == 0)     {
-           keyPressed = '0';CNCONBbits.ON = 1; 
+           keyPressed = '0'; 
           return keyPressed;
     }
     
     else if(a5 == 0)     {
-           keyPressed = '#';CNCONBbits.ON = 1; 
+           keyPressed = '#';
            return keyPressed;
     }
            
     
-    LATEbits.LATE0 = 0;// open drain collector for outputs
-    LATEbits.LATE2 = 0;
-    LATEbits.LATE4 = 0;
-    LATEbits.LATE6 = 0;
+//    LATEbits.LATE0 = 1;// open drain collector for outputs
+//    LATEbits.LATE2 = 1;
+//    LATEbits.LATE4 = 1;
+//    LATEbits.LATE6 = 1;
     
       
    // IEC1bits.CNBIE = 1;
